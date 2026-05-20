@@ -1,0 +1,68 @@
+# Set default editor
+export EDITOR='vim'
+
+# Path to Pure prompt script
+ASYNC_PATH="$HOME/.zsh/pure/async.zsh"
+PURE_PATH="$HOME/.zsh/pure/pure.zsh"
+ZSH_SYNTAX_HIGHLIGHTING_PATH="/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+ZSH_AUTOSUGGESTIONS_PATH="/usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+
+# Syntax highlighting
+[ -f $ZSH_SYNTAX_HIGHLIGHTING_PATH ] && source $ZSH_SYNTAX_HIGHLIGHTING_PATH
+
+# Command autosuggestions
+[ -f $ZSH_AUTOSUGGESTIONS_PATH ] && source $ZSH_AUTOSUGGESTIONS_PATH
+
+# History settings
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+
+# Aliases
+alias ll='ls -lh --color=auto'
+alias la='ls -lAh --color=auto'
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias zshconfig="vim ~/.zshrc"
+alias update="sudo dnf update"
+
+# Git aliases
+alias gst='git status'
+alias gco='git checkout'
+alias gcm='git commit'
+alias gb='git branch'
+
+# Enhanced key bindings
+bindkey '^R' history-incremental-search-backward
+bindkey '^U' backward-kill-line
+bindkey '^K' kill-line
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
+
+# Path configuration
+export PATH="$HOME/bin:/usr/local/bin:$PATH"
+
+# Load Pure prompt
+[ -f "$ASYNC_PATH" ] && source "$ASYNC_PATH"
+[ -f "$PURE_PATH" ] && source "$PURE_PATH" && export PURE_PROMPT_SYMBOL='🐢'
+
+# Export LESS options
+export LESS='-RFX'
+
+# Command Execution Time
+export PURE_CMD_MAX_EXEC_TIME=5
+
+# Right side prompt
+RPROMPT='%(?.%F{green}✔%f.%F{red}✘%f)'
+
+ssh() {
+    # local override function
+    # set background color
+    printf "\033]11;#9b0853\007"
+    command ssh "$@"
+    # revert background
+    printf "\033]11;#1e1e2e\007"
+}
+
